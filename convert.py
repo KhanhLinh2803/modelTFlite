@@ -1,22 +1,26 @@
 import tensorflow as tf
 
-# Tên file model .h5 của bạn (đảm bảo file này đã nằm trong thư mục C:\modelTFlite)
+# 1. Đường dẫn file model H5 của bạn
 h5_model_path = 'model_plant_keras2.h5' 
-# Load model
+
+# 2. Load model
 model = tf.keras.models.load_model(h5_model_path, compile=False)
 
-# Convert sang TFLite với cấu hình tương thích ngược
+# 3. Cấu hình Converter để tương thích với bản cũ (Legacy)
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
+
+# QUAN TRỌNG: Ép buộc sử dụng các Ops cũ hơn
 converter.target_spec.supported_ops = [
-    tf.lite.OpsSet.TFLITE_BUILTINS,
-    tf.lite.OpsSet.SELECT_TF_OPS
+    tf.lite.OpsSet.TFLITE_BUILTINS # Chỉ dùng built-ins chuẩn
 ]
-converter.optimizations = [tf.lite.Optimize.DEFAULT]
+
+# Thêm dòng này để ngăn lỗi Version 12
+converter._experimental_lower_tensor_list_ops = True
 
 tflite_model = converter.convert()
 
-# Lưu thành file mới
-with open('model_plant_final.tflite', 'wb') as f:
+# 4. Lưu lại file mới (Ghi đè lên file cũ)
+with open('model_plant.tflite', 'wb') as f:
     f.write(tflite_model)
 
-print("✅ Đã tạo xong model_plant_final.tflite!")
+print("✅ Đã tạo lại file model_plant.tflite với phiên bản Op tương thích thấp hơn!")

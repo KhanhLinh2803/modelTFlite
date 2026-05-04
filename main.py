@@ -11,7 +11,7 @@ app=FastAPI()
 
 # 1. Cấu hình đường dẫn
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "model", "model_plant_final.tflite")
+MODEL_PATH = os.path.join(BASE_DIR, "model", "model_plant.tflite")
 LABELS_PATH = os.path.join(BASE_DIR, "model", "labels.json")
 
 # Khởi tạo các biến toàn cục
