@@ -74,7 +74,7 @@ async def predict(file: UploadFile = File(...)):
 
         # 5. Ngưỡng tin cậy (Confidence Threshold)
         # Nếu thấp hơn 80%, có thể ảnh không phải lá cây hoặc bệnh lạ
-        if score < 0.80:
+        if score < 0.60:
             return {
                 "label": "Không xác định", 
                 "confidence": round(score * 100, 2),
